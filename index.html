@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AIEP Token — Same output. Less compute.</title>
-  <meta name="description" content="Side-by-side comparison of standard LLM token usage vs AIEP incremental reasoning — with live efficiency metrics.">
+  <meta name="description"
+    content="Side-by-side comparison of standard LLM token usage vs AIEP incremental reasoning — with live efficiency metrics.">
 
   <!--
     CONFIGURATION
@@ -14,7 +16,12 @@
   -->
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #ffffff;
@@ -40,7 +47,10 @@
     }
 
     /* Header */
-    .at-header { margin-bottom: 24px; }
+    .at-header {
+      margin-bottom: 24px;
+    }
+
     .at-header-inner {
       display: flex;
       align-items: center;
@@ -48,13 +58,42 @@
       gap: 16px;
       flex-wrap: wrap;
     }
-    .at-wordmark { display: flex; align-items: baseline; gap: 8px; }
-    .at-logo { font-size: 1.4rem; color: var(--fgColor-accent); }
-    .at-title { font-size: 1.25rem; font-weight: 600; }
-    .at-subtitle { font-size: 0.8rem; color: var(--fgColor-muted); }
-    .at-nav { display: flex; gap: 12px; }
-    .at-nav-link { font-size: 0.8rem; color: var(--fgColor-accent); text-decoration: none; }
-    .at-nav-link:hover { text-decoration: underline; }
+
+    .at-wordmark {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .at-logo {
+      font-size: 1.4rem;
+      color: var(--fgColor-accent);
+    }
+
+    .at-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .at-subtitle {
+      font-size: 0.8rem;
+      color: var(--fgColor-muted);
+    }
+
+    .at-nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    .at-nav-link {
+      font-size: 0.8rem;
+      color: var(--fgColor-accent);
+      text-decoration: none;
+    }
+
+    .at-nav-link:hover {
+      text-decoration: underline;
+    }
 
     /* Intro */
     .at-intro {
@@ -66,7 +105,12 @@
     }
 
     /* Input bar */
-    .at-input-bar { display: flex; gap: 8px; margin-bottom: 24px; }
+    .at-input-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
     .at-input {
       flex: 1;
       padding: 8px 12px;
@@ -78,7 +122,12 @@
       outline: none;
       font-family: inherit;
     }
-    .at-input:focus { border-color: var(--borderColor-accent-emphasis); box-shadow: 0 0 0 3px rgba(9,105,218,.1); }
+
+    .at-input:focus {
+      border-color: var(--borderColor-accent-emphasis);
+      box-shadow: 0 0 0 3px rgba(9, 105, 218, .1);
+    }
+
     .at-run-btn {
       padding: 8px 20px;
       font-size: 0.9rem;
@@ -90,13 +139,33 @@
       cursor: pointer;
       font-family: inherit;
     }
-    .at-run-btn:hover { background: #0860c5; }
-    .at-run-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .at-run-btn:hover {
+      background: #0860c5;
+    }
+
+    .at-run-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
 
     /* Comparison grid */
-    .at-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
-    .at-grid--hidden { display: none; }
-    @media (max-width: 600px) { .at-grid { grid-template-columns: 1fr; } }
+    .at-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .at-grid--hidden {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .at-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
     /* Columns */
     .at-col {
@@ -105,19 +174,52 @@
       padding: 16px;
       background: var(--bgColor-default);
     }
+
     .at-col--aiep {
       border-color: var(--borderColor-accent-emphasis);
       background: var(--bgColor-accent-muted);
     }
-    .at-col-header { margin-bottom: 12px; }
-    .at-col-label { font-weight: 600; font-size: 0.9rem; display: block; }
-    .at-col-sublabel { font-size: 0.75rem; color: var(--fgColor-muted); }
+
+    .at-col-header {
+      margin-bottom: 12px;
+    }
+
+    .at-col-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: block;
+    }
+
+    .at-col-sublabel {
+      font-size: 0.75rem;
+      color: var(--fgColor-muted);
+    }
 
     /* Metrics row */
-    .at-metrics { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
-    .at-metric { display: flex; flex-direction: column; }
-    .at-metric-label { font-size: 0.7rem; color: var(--fgColor-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-    .at-metric-val { font-size: 1rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .at-metrics {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .at-metric {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .at-metric-label {
+      font-size: 0.7rem;
+      color: var(--fgColor-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .at-metric-val {
+      font-size: 1rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
 
     /* Answer box */
     .at-answer-box {
@@ -128,7 +230,11 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-    .at-answer-box--loading { color: var(--fgColor-muted); font-style: italic; }
+
+    .at-answer-box--loading {
+      color: var(--fgColor-muted);
+      font-style: italic;
+    }
 
     /* Efficiency line */
     .at-efficiency-line {
@@ -140,7 +246,10 @@
       color: var(--fgColor-success);
       line-height: 1.5;
     }
-    .at-efficiency-line strong { font-weight: 600; }
+
+    .at-efficiency-line strong {
+      font-weight: 600;
+    }
 
     /* Mechanics panel */
     .at-mechanics {
@@ -149,6 +258,7 @@
       border-radius: 8px;
       overflow: hidden;
     }
+
     .at-mech-summary {
       display: flex;
       align-items: center;
@@ -162,12 +272,34 @@
       list-style: none;
       user-select: none;
     }
-    .at-mech-summary::-webkit-details-marker { display: none; }
-    .at-mech-summary::before { content: "▶"; font-size: 0.65rem; transition: transform 0.2s; }
-    details[open] .at-mech-summary::before { transform: rotate(90deg); }
-    .at-mech-body { padding: 14px 16px; font-size: 0.8rem; }
-    .at-mech-section { margin-bottom: 16px; }
-    .at-mech-section:last-child { margin-bottom: 0; }
+
+    .at-mech-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .at-mech-summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      transition: transform 0.2s;
+    }
+
+    details[open] .at-mech-summary::before {
+      transform: rotate(90deg);
+    }
+
+    .at-mech-body {
+      padding: 14px 16px;
+      font-size: 0.8rem;
+    }
+
+    .at-mech-section {
+      margin-bottom: 16px;
+    }
+
+    .at-mech-section:last-child {
+      margin-bottom: 0;
+    }
+
     .at-mech-title {
       font-size: 0.7rem;
       font-weight: 600;
@@ -176,13 +308,53 @@
       color: var(--fgColor-muted);
       margin-bottom: 8px;
     }
-    .at-mech-row { display: flex; flex-wrap: wrap; gap: 16px; }
-    .at-mech-stat { display: flex; flex-direction: column; gap: 2px; min-width: 100px; }
-    .at-mech-label { font-size: 0.7rem; color: var(--fgColor-muted); }
-    .at-mech-val { font-size: 0.85rem; font-weight: 600; font-variant-numeric: tabular-nums; }
-    .at-mech-val--secondary { font-weight: 400; font-style: italic; }
-    .at-mech-rail { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
-    .at-mech-rail-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; line-height: 1.4; }
+
+    .at-mech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .at-mech-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 100px;
+    }
+
+    .at-mech-label {
+      font-size: 0.7rem;
+      color: var(--fgColor-muted);
+    }
+
+    .at-mech-val {
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .at-mech-val--secondary {
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .at-mech-rail {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .at-mech-rail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+
     .at-mech-rail-url {
       color: var(--fgColor-accent);
       text-decoration: none;
@@ -191,7 +363,11 @@
       white-space: nowrap;
       max-width: 500px;
     }
-    .at-mech-rail-url:hover { text-decoration: underline; }
+
+    .at-mech-rail-url:hover {
+      text-decoration: underline;
+    }
+
     .at-mech-tier {
       flex-shrink: 0;
       padding: 1px 5px;
@@ -201,15 +377,46 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-    .at-mech-tier--verified { background: #dafbe1; color: #1a7f37; }
-    .at-mech-tier--unverified { background: #fff8c5; color: #9a6700; }
-    .at-mech-tier--insufficient { background: #ffebe9; color: #cf222e; }
+
+    .at-mech-tier--verified {
+      background: #dafbe1;
+      color: #1a7f37;
+    }
+
+    .at-mech-tier--unverified {
+      background: #fff8c5;
+      color: #9a6700;
+    }
+
+    .at-mech-tier--insufficient {
+      background: #ffebe9;
+      color: #cf222e;
+    }
 
     /* Footer */
-    .at-footer { border-top: 1px solid var(--borderColor-default); padding-top: 16px; }
-    .at-cumulative { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-    .at-cumul-label { font-size: 0.8rem; color: var(--fgColor-muted); }
-    .at-cumul-val { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--fgColor-default); }
+    .at-footer {
+      border-top: 1px solid var(--borderColor-default);
+      padding-top: 16px;
+    }
+
+    .at-cumulative {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .at-cumul-label {
+      font-size: 0.8rem;
+      color: var(--fgColor-muted);
+    }
+
+    .at-cumul-val {
+      font-size: 1rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--fgColor-default);
+    }
 
     /* HAIR chain stats */
     .at-mech-hash {
@@ -219,6 +426,7 @@
       color: var(--fgColor-accent);
       word-break: break-all;
     }
+
     .at-mech-genesis {
       display: inline-block;
       padding: 1px 6px;
@@ -231,346 +439,352 @@
     }
   </style>
 </head>
+
 <body data-api-base="https://api.piea.ai">
 
-<div id="at-root">
+  <div id="at-root">
 
-  <header class="at-header">
-    <div class="at-header-inner">
-      <div class="at-wordmark">
-        <span class="at-logo">&#9672;</span>
-        <span class="at-title">AIEP Token</span>
-        <span class="at-subtitle">Same output. Less compute.</span>
-      </div>
-      <nav class="at-nav">
-        <a href="https://aiep.dev/aiep-live" class="at-nav-link">Live stats &#8594;</a>
-      </nav>
-    </div>
-  </header>
-
-  <div class="at-intro">
-    <p>
-      Enter a prompt below. The left column shows what a standard LLM invocation
-      costs. The right column shows what AIEP's incremental reasoning substrate
-      actually used &mdash; pulling from committed prior reasoning instead of deriving
-      everything from scratch.
-    </p>
-  </div>
-
-  <div class="at-input-bar">
-    <input id="at-prompt" type="text" class="at-input" placeholder="Ask a question&hellip;" autocomplete="off" spellcheck="false" />
-    <button id="at-run" class="at-run-btn">Run</button>
-  </div>
-
-  <div id="at-grid" class="at-grid at-grid--hidden">
-    <div class="at-col at-col--standard">
-      <div class="at-col-header">
-        <span class="at-col-label">Standard</span>
-        <span class="at-col-sublabel">Stateless re-derivation</span>
-      </div>
-      <div class="at-metrics" id="std-metrics">
-        <div class="at-metric"><span class="at-metric-label">Tokens</span><span class="at-metric-val" id="std-tokens">&mdash;</span></div>
-        <div class="at-metric"><span class="at-metric-label">Sources</span><span class="at-metric-val" id="std-sources">&mdash;</span></div>
-        <div class="at-metric"><span class="at-metric-label">Latency</span><span class="at-metric-val" id="std-latency">&mdash;</span></div>
-      </div>
-      <div class="at-answer-box" id="std-answer"></div>
-    </div>
-    <div class="at-col at-col--aiep">
-      <div class="at-col-header">
-        <span class="at-col-label">AIEP</span>
-        <span class="at-col-sublabel">Incremental recall substrate</span>
-      </div>
-      <div class="at-metrics" id="aiep-metrics">
-        <div class="at-metric"><span class="at-metric-label">Tokens</span><span class="at-metric-val" id="aiep-tokens">&mdash;</span></div>
-        <div class="at-metric"><span class="at-metric-label">Reused</span><span class="at-metric-val" id="aiep-reused">&mdash;</span></div>
-        <div class="at-metric"><span class="at-metric-label">Fresh</span><span class="at-metric-val" id="aiep-fresh">&mdash;</span></div>
-      </div>
-      <div class="at-answer-box" id="aiep-answer"></div>
-      <div class="at-efficiency-line" id="aiep-efficiency" style="display:none"></div>
-    </div>
-  </div>
-
-  <details id="at-mechanics" class="at-mechanics" style="display:none">
-    <summary class="at-mech-summary">
-      <span class="at-mech-lock">&#128274;</span> Substrate mechanics
-    </summary>
-    <div class="at-mech-body">
-      <div class="at-mech-section">
-        <div class="at-mech-title">P117 &mdash; Parametric unburdening</div>
-        <div class="at-mech-row">
-          <div class="at-mech-stat"><span class="at-mech-label">Reduction ratio</span><span class="at-mech-val" id="mech-reduction">&mdash;</span></div>
-          <div class="at-mech-stat"><span class="at-mech-label">Reused steps</span><span class="at-mech-val" id="mech-reused">&mdash;</span></div>
-          <div class="at-mech-stat"><span class="at-mech-label">Fresh steps</span><span class="at-mech-val" id="mech-fresh">&mdash;</span></div>
-          <div class="at-mech-stat"><span class="at-mech-label">Tokens avoided</span><span class="at-mech-val" id="mech-avoided">&mdash;</span></div>
-          <div class="at-mech-stat"><span class="at-mech-label">Source diversity</span><span class="at-mech-val" id="mech-diversity">&mdash;</span></div>
+    <header class="at-header">
+      <div class="at-header-inner">
+        <div class="at-wordmark">
+          <span class="at-logo">&#9672;</span>
+          <span class="at-title">AIEP Token</span>
+          <span class="at-subtitle">Same output. Less compute.</span>
         </div>
+        <nav class="at-nav">
+          <a href="https://aiep.dev/aiep-live" class="at-nav-link">Live stats &#8594;</a>
+        </nav>
       </div>
-      <div class="at-mech-section">
-        <div class="at-mech-title">LLM token accounting</div>
-        <div class="at-mech-row">
-          <div class="at-mech-stat"><span class="at-mech-label">Prompt tokens</span><span class="at-mech-val" id="mech-prompt-tokens">&mdash;</span></div>
-          <div class="at-mech-stat"><span class="at-mech-label">Completion tokens</span><span class="at-mech-val" id="mech-completion-tokens">&mdash;</span></div>
-          <div class="at-mech-stat"><span class="at-mech-label">Total tokens</span><span class="at-mech-val" id="mech-total-tokens">&mdash;</span></div>
-          <div class="at-mech-stat"><span class="at-mech-label">Source</span><span class="at-mech-val at-mech-val--secondary" id="mech-token-source">&mdash;</span></div>
+    </header>
+
+    <div class="at-intro">
+      <p>
+        Enter a prompt below. The left column shows what a standard LLM invocation
+        costs. The right column shows what AIEP's incremental reasoning substrate
+        actually used &mdash; pulling from committed prior reasoning instead of deriving
+        everything from scratch.
+      </p>
+    </div>
+
+    <div class="at-input-bar">
+      <input id="at-prompt" type="text" class="at-input" placeholder="Ask a question&hellip;" autocomplete="off"
+        spellcheck="false" />
+      <button id="at-run" class="at-run-btn">Run</button>
+    </div>
+
+    <div id="at-grid" class="at-grid at-grid--hidden">
+      <div class="at-col at-col--standard">
+        <div class="at-col-header">
+          <span class="at-col-label">Standard</span>
+          <span class="at-col-sublabel">Stateless re-derivation</span>
         </div>
+        <div class="at-metrics" id="std-metrics">
+          <div class="at-metric"><span class="at-metric-label">Tokens</span><span class="at-metric-val"
+              id="std-tokens">&mdash;</span></div>
+          <div class="at-metric"><span class="at-metric-label">Sources</span><span class="at-metric-val"
+              id="std-sources">&mdash;</span></div>
+          <div class="at-metric"><span class="at-metric-label">Latency</span><span class="at-metric-val"
+              id="std-latency">&mdash;</span></div>
+        </div>
+        <div class="at-answer-box" id="std-answer"></div>
       </div>
-      <div class="at-mech-section">
-        <div class="at-mech-title">Evidence rail</div>
-        <ul class="at-mech-rail" id="mech-rail"></ul>
+      <div class="at-col at-col--aiep">
+        <div class="at-col-header">
+          <span class="at-col-label">AIEP</span>
+          <span class="at-col-sublabel">Incremental recall substrate</span>
+        </div>
+        <div class="at-metrics" id="aiep-metrics">
+          <div class="at-metric"><span class="at-metric-label">Tokens</span><span class="at-metric-val"
+              id="aiep-tokens">&mdash;</span></div>
+          <div class="at-metric"><span class="at-metric-label">Reused</span><span class="at-metric-val"
+              id="aiep-reused">&mdash;</span></div>
+          <div class="at-metric"><span class="at-metric-label">Fresh</span><span class="at-metric-val"
+              id="aiep-fresh">&mdash;</span></div>
+        </div>
+        <div class="at-answer-box" id="aiep-answer"></div>
+        <div class="at-efficiency-line" id="aiep-efficiency" style="display:none"></div>
       </div>
-      <div class="at-mech-section" id="mech-conn-section" style="display:none">
-        <div class="at-mech-title">Cross-domain connection rail</div>
-        <ul class="at-mech-rail" id="mech-conn-rail"></ul>
-      </div>
-      <div class="at-mech-section" id="mech-hair-section" style="display:none">
-        <div class="at-mech-title">HAIR artefact &mdash; LRM_SPEC.md §8</div>
-        <div class="at-mech-row">
-          <div class="at-mech-stat" style="min-width:200px">
-            <span class="at-mech-label">Pack hash</span>
-            <span class="at-mech-val at-mech-hash" id="mech-hair-hash">&mdash;</span>
-          </div>
-          <div class="at-mech-stat">
-            <span class="at-mech-label">Chain depth</span>
-            <span class="at-mech-val" id="mech-hair-depth">&mdash;</span>
-          </div>
-          <div class="at-mech-stat">
-            <span class="at-mech-label">Genesis</span>
-            <span class="at-mech-val" id="mech-hair-genesis">&mdash;</span>
-          </div>
-          <div class="at-mech-stat">
-            <span class="at-mech-label">Recall tokens</span>
-            <span class="at-mech-val" id="mech-hair-recall">&mdash;</span>
-          </div>
-          <div class="at-mech-stat">
-            <span class="at-mech-label">Delta tokens</span>
-            <span class="at-mech-val" id="mech-hair-delta">&mdash;</span>
-          </div>
-          <div class="at-mech-stat">
-            <span class="at-mech-label">Tokens saved</span>
-            <span class="at-mech-val" id="mech-hair-saved">&mdash;</span>
+    </div>
+
+    <details id="at-mechanics" class="at-mechanics" style="display:none">
+      <summary class="at-mech-summary">
+        <span class="at-mech-lock">&#128274;</span> Substrate mechanics
+      </summary>
+      <div class="at-mech-body">
+        <div class="at-mech-section">
+          <div class="at-mech-title">P117 &mdash; Parametric unburdening</div>
+          <div class="at-mech-row">
+            <div class="at-mech-stat"><span class="at-mech-label">Reduction ratio</span><span class="at-mech-val"
+                id="mech-reduction">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">Reused steps</span><span class="at-mech-val"
+                id="mech-reused">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">Fresh steps</span><span class="at-mech-val"
+                id="mech-fresh">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">Tokens avoided</span><span class="at-mech-val"
+                id="mech-avoided">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">Source diversity</span><span class="at-mech-val"
+                id="mech-diversity">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">HAIR recalls</span><span class="at-mech-val"
+                id="mech-hair-recalls">&mdash;</span></div>
           </div>
         </div>
+        <div class="at-mech-section">
+          <div class="at-mech-title">LLM token accounting</div>
+          <div class="at-mech-row">
+            <div class="at-mech-stat"><span class="at-mech-label">Prompt tokens</span><span class="at-mech-val"
+                id="mech-prompt-tokens">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">Completion tokens</span><span class="at-mech-val"
+                id="mech-completion-tokens">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">Total tokens</span><span class="at-mech-val"
+                id="mech-total-tokens">&mdash;</span></div>
+            <div class="at-mech-stat"><span class="at-mech-label">Source</span><span
+                class="at-mech-val at-mech-val--secondary" id="mech-token-source">&mdash;</span></div>
+          </div>
+        </div>
+        <div class="at-mech-section">
+          <div class="at-mech-title">Evidence rail</div>
+          <ul class="at-mech-rail" id="mech-rail"></ul>
+        </div>
+        <div class="at-mech-section" id="mech-conn-section" style="display:none">
+          <div class="at-mech-title">Cross-domain connection rail</div>
+          <ul class="at-mech-rail" id="mech-conn-rail"></ul>
+        </div>
+        <div class="at-mech-section" id="mech-hair-section" style="display:none">
+          <div class="at-mech-title">HAIR artefact &mdash; LRM_SPEC.md §8</div>
+          <div class="at-mech-row">
+            <div class="at-mech-stat" style="min-width:200px">
+              <span class="at-mech-label">Pack hash</span>
+              <span class="at-mech-val at-mech-hash" id="mech-hair-hash">&mdash;</span>
+            </div>
+            <div class="at-mech-stat">
+              <span class="at-mech-label">Chain depth</span>
+              <span class="at-mech-val" id="mech-hair-depth">&mdash;</span>
+            </div>
+            <div class="at-mech-stat">
+              <span class="at-mech-label">Genesis</span>
+              <span class="at-mech-val" id="mech-hair-genesis">&mdash;</span>
+            </div>
+            <div class="at-mech-stat">
+              <span class="at-mech-label">Recall tokens</span>
+              <span class="at-mech-val" id="mech-hair-recall">&mdash;</span>
+            </div>
+            <div class="at-mech-stat">
+              <span class="at-mech-label">Delta tokens</span>
+              <span class="at-mech-val" id="mech-hair-delta">&mdash;</span>
+            </div>
+            <div class="at-mech-stat">
+              <span class="at-mech-label">Tokens saved</span>
+              <span class="at-mech-val" id="mech-hair-saved">&mdash;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="at-footer">
+      <div class="at-cumulative">
+        <span class="at-cumul-label">Cumulative tokens saved across all AIEP sessions:</span>
+        <span class="at-cumul-val" id="at-cumulative">loading&hellip;</span>
       </div>
     </div>
-  </details>
 
-  <div class="at-footer">
-    <div class="at-cumulative">
-      <span class="at-cumul-label">Cumulative tokens saved across all AIEP sessions:</span>
-      <span class="at-cumul-val" id="at-cumulative">loading&hellip;</span>
-    </div>
   </div>
 
-</div>
+  <script>
+    (function () {
+      const API_BASE = (document.body.dataset.apiBase || "http://localhost:8788").replace(/\/+$/, "");
 
-<script>
-(function () {
-  const API_BASE = (document.body.dataset.apiBase || "http://localhost:8788").replace(/\/+$/, "");
+      const promptEl = document.getElementById("at-prompt");
+      const runBtn = document.getElementById("at-run");
+      const grid = document.getElementById("at-grid");
+      const cumulEl = document.getElementById("at-cumulative");
 
-  const promptEl = document.getElementById("at-prompt");
-  const runBtn = document.getElementById("at-run");
-  const grid = document.getElementById("at-grid");
-  const cumulEl = document.getElementById("at-cumulative");
-
-  async function loadCumulative() {
-    try {
-      const res = await fetch(`${API_BASE}/api/stats`);
-      if (!res.ok) return;
-      const data = await res.json();
-      if (cumulEl && typeof data.tokens_saved_total === "number") {
-        cumulEl.textContent = data.tokens_saved_total.toLocaleString();
+      async function loadCumulative() {
+        try {
+          const res = await fetch(`${API_BASE}/api/stats`);
+          if (!res.ok) return;
+          const data = await res.json();
+          if (cumulEl && typeof data.tokens_saved_total === "number") {
+            cumulEl.textContent = data.tokens_saved_total.toLocaleString();
+          }
+        } catch { /* non-critical */ }
       }
-    } catch { /* non-critical */ }
-  }
-  loadCumulative();
-
-  function fmt(n) { return typeof n === "number" ? n.toLocaleString() : "\u2014"; }
-  function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
-  function loading(id, msg) {
-    const el = document.getElementById(id);
-    if (el) { el.textContent = msg || ""; el.className = "at-answer-box at-answer-box--loading"; }
-  }
-  function ready(id) { const el = document.getElementById(id); if (el) el.className = "at-answer-box"; }
-
-  async function run() {
-    const question = promptEl.value.trim();
-    if (!question) return;
-    runBtn.disabled = true;
-    grid.classList.remove("at-grid--hidden");
-    loading("std-answer", "Reasoning\u2026");
-    loading("aiep-answer", "Reasoning with AIEP substrate\u2026");
-    setText("std-tokens", "\u2014"); setText("std-sources", "\u2014"); setText("std-latency", "\u2014");
-    setText("aiep-tokens", "\u2014"); setText("aiep-reused", "\u2014"); setText("aiep-fresh", "\u2014");
-    const effEl = document.getElementById("aiep-efficiency");
-    if (effEl) effEl.style.display = "none";
-    const t0 = Date.now();
-    try {
-      const resp = await fetch(`${API_BASE}/api/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, session_id: "aiep-token-demo" }),
-      });
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({ error: "Request failed" }));
-        loading("aiep-answer", "Error: " + (err.error || resp.statusText));
-        loading("std-answer", "\u2014");
-        return;
-      }
-      const data = await resp.json();
-      const latencyMs = Date.now() - t0;
-      const eff = data.efficiency;
-      const evidenceCount = (data.evidence_rail || []).length;
-      const aiepTokens = data.usage && data.usage.total_tokens != null
-        ? data.usage.total_tokens
-        : (eff ? (eff.baseline_tokens - eff.tokens_avoided) : null);
-      setText("aiep-tokens", aiepTokens != null ? fmt(Math.round(aiepTokens)) : "\u2014");
-      setText("aiep-reused", eff ? (eff.reused_steps + " / " + evidenceCount) : "\u2014");
-      setText("aiep-fresh", eff ? String(eff.fresh_steps) : "\u2014");
-      ready("aiep-answer");
-      document.getElementById("aiep-answer").textContent = data.answer || "";
-      if (eff && eff.reuse_pct >= 0) {
-        effEl.style.display = "block";
-        effEl.innerHTML = "<strong>\u2746 " + eff.reuse_pct + "% recall reuse</strong> \u2014 " +
-          fmt(eff.tokens_avoided) + " tokens avoided. " +
-          fmt(eff.reused_steps) + " evidence artefact" + (eff.reused_steps === 1 ? "" : "s") + " recalled from prior reasoning.";
-      }
-      const baselineTokens = (eff && eff.baseline_tokens) || (evidenceCount * 500);
-      const baselineLatency = ((latencyMs * (baselineTokens / Math.max(aiepTokens || baselineTokens, 1))) / 1000).toFixed(1);
-      setText("std-tokens", fmt(baselineTokens));
-      setText("std-sources", fmt(evidenceCount));
-      setText("std-latency", "~" + baselineLatency + "s");
-      ready("std-answer");
-      document.getElementById("std-answer").textContent = data.answer || "";
-      populateMechanics(data, eff);
       loadCumulative();
-    } catch (e) {
-      loading("aiep-answer", "Network error: " + e.message);
-      loading("std-answer", "\u2014");
-    } finally {
-      runBtn.disabled = false;
-    }
-  }
 
-  runBtn.addEventListener("click", run);
-  promptEl.addEventListener("keydown", function(e) { if (e.key === "Enter") run(); });
+      function fmt(n) { return typeof n === "number" ? n.toLocaleString() : "\u2014"; }
+      function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+      function loading(id, msg) {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = msg || ""; el.className = "at-answer-box at-answer-box--loading"; }
+      }
+      function ready(id) { const el = document.getElementById(id); if (el) el.className = "at-answer-box"; }
 
-  function populateMechanics(data, eff) {
-    const panel = document.getElementById("at-mechanics");
-    if (!panel) return;
-    if (eff) {
-      setText("mech-reduction", typeof eff.reduction_ratio === "number"
-        ? (Math.round(eff.reduction_ratio * 1000) / 10 + "%") : (eff.reuse_pct + "%"));
-      setText("mech-reused", fmt(eff.reused_steps));
-      setText("mech-fresh", fmt(eff.fresh_steps));
-      setText("mech-avoided", fmt(eff.tokens_avoided));
-    }
-    const diversity = data.source_diversity_score;
-    setText("mech-diversity", typeof diversity === "number" ? (Math.round(diversity * 1000) / 10 + "%") : "\u2014");
-    const u = data.llm_usage;
-    if (u) {
-      setText("mech-prompt-tokens", fmt(u.prompt_tokens));
-      setText("mech-completion-tokens", fmt(u.completion_tokens));
-      setText("mech-total-tokens", fmt(u.total_tokens));
-      setText("mech-token-source", "Ollama (actual)");
-    } else {
-      const est = eff ? (eff.baseline_tokens - eff.tokens_avoided) : null;
-      setText("mech-prompt-tokens", est != null ? ("\u2248 " + fmt(Math.round(est * 0.7))) : "\u2014");
-      setText("mech-completion-tokens", est != null ? ("\u2248 " + fmt(Math.round(est * 0.3))) : "\u2014");
-      setText("mech-total-tokens", est != null ? ("\u2248 " + fmt(Math.round(est))) : "\u2014");
-      setText("mech-token-source", "Workers AI (estimated)");
-    }
-    const rail = data.evidence_rail || [];
-    const railEl = document.getElementById("mech-rail");
-    if (railEl) {
-      railEl.innerHTML = "";
-      if (!rail.length) {
-        railEl.innerHTML = "<li class='at-mech-rail-item' style='color:#57606a'>No evidence artefacts</li>";
-      } else {
-        for (var i = 0; i < Math.min(rail.length, 10); i++) {
-          var item = rail[i];
-          var tier = ((item.confidence_tier || "unverified")).toLowerCase();
-          var li = document.createElement("li");
-          li.className = "at-mech-rail-item";
-          li.innerHTML = "<span class='at-mech-tier at-mech-tier--" + tier + "'>" + tier + "</span>" +
-            "<a class='at-mech-rail-url' href='" + escHtml(item.source_url) + "' target='_blank' rel='noopener noreferrer'>" + escHtml(item.source_url) + "</a>";
-          railEl.appendChild(li);
-        }
-        if (rail.length > 10) {
-          var li2 = document.createElement("li");
-          li2.className = "at-mech-rail-item";
-          li2.style.color = "#57606a";
-          li2.textContent = "\u2026 and " + (rail.length - 10) + " more";
-          railEl.appendChild(li2);
+      async function run() {
+        const question = promptEl.value.trim();
+        if (!question) return;
+        runBtn.disabled = true;
+        grid.classList.remove("at-grid--hidden");
+        loading("std-answer", "Reasoning\u2026");
+        loading("aiep-answer", "Reasoning with AIEP substrate\u2026");
+        setText("std-tokens", "\u2014"); setText("std-sources", "\u2014"); setText("std-latency", "\u2014");
+        setText("aiep-tokens", "\u2014"); setText("aiep-reused", "\u2014"); setText("aiep-fresh", "\u2014");
+        const effEl = document.getElementById("aiep-efficiency");
+        if (effEl) effEl.style.display = "none";
+        const t0 = Date.now();
+        try {
+          const resp = await fetch(`${API_BASE}/api/ask`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question, session_id: "aiep-token-demo" }),
+          });
+          if (!resp.ok) {
+            const err = await resp.json().catch(() => ({ error: "Request failed" }));
+            loading("aiep-answer", "Error: " + (err.error || resp.statusText));
+            loading("std-answer", "\u2014");
+            return;
+          }
+          const data = await resp.json();
+          const latencyMs = Date.now() - t0;
+          const eff = data.efficiency;
+          const evidenceCount = (data.evidence_rail || []).length;
+          const aiepTokens = data.usage && data.usage.total_tokens != null
+            ? data.usage.total_tokens
+            : (eff ? (eff.baseline_tokens - eff.tokens_avoided) : null);
+          setText("aiep-tokens", aiepTokens != null ? fmt(Math.round(aiepTokens)) : "\u2014");
+          setText("aiep-reused", eff ? (eff.reused_steps + " / " + evidenceCount) : "\u2014");
+          setText("aiep-fresh", eff ? String(eff.fresh_steps) : "\u2014");
+          ready("aiep-answer");
+          document.getElementById("aiep-answer").textContent = data.answer || "";
+          if (eff && eff.reuse_pct >= 0) {
+            effEl.style.display = "block";
+            var hairNote = (eff.hair_recalls > 0) ? " + " + fmt(eff.hair_recalls) + " HAIR chain recall" + (eff.hair_recalls === 1 ? "." : "s.") : ".";
+            effEl.innerHTML = "<strong>\u2746 " + eff.reuse_pct + "% recall reuse</strong> \u2014 " +
+              fmt(eff.tokens_avoided) + " tokens avoided. " +
+              fmt(eff.reused_steps) + " evidence artefact" + (eff.reused_steps === 1 ? "" : "s") + " recalled from prior reasoning" + hairNote;
+          }
+          const baselineTokens = (eff && eff.baseline_tokens) || (evidenceCount * 500);
+          const baselineLatency = ((latencyMs * (baselineTokens / Math.max(aiepTokens || baselineTokens, 1))) / 1000).toFixed(1);
+          setText("std-tokens", fmt(baselineTokens));
+          setText("std-sources", fmt(evidenceCount));
+          setText("std-latency", "~" + baselineLatency + "s");
+          ready("std-answer");
+          document.getElementById("std-answer").textContent = data.answer || "";
+          populateMechanics(data, eff);
+          loadCumulative();
+        } catch (e) {
+          loading("aiep-answer", "Network error: " + e.message);
+          loading("std-answer", "\u2014");
+        } finally {
+          runBtn.disabled = false;
         }
       }
-    }
-    const connRail = data.connection_rail || [];
-    const connSec = document.getElementById("mech-conn-section");
-    const connEl = document.getElementById("mech-conn-rail");
-    if (connRail.length && connSec && connEl) {
-      connSec.style.display = "";
-      connEl.innerHTML = "";
-      for (var j = 0; j < Math.min(connRail.length, 6); j++) {
-        var ci = connRail[j];
-        var cl = document.createElement("li");
-        cl.className = "at-mech-rail-item";
-        cl.innerHTML = "<a class='at-mech-rail-url' href='" + escHtml(ci.source_url) + "' target='_blank' rel='noopener noreferrer'>" + escHtml(ci.source_url) + "</a>";
-        connEl.appendChild(cl);
-      }
-    } else if (connSec) {
-      connSec.style.display = "none";
-    }
 
-    // HAIR artefact telemetry (LRM_SPEC.md §8)
-    var hair = data.model_dissent && data.model_dissent.hair_telemetry;
-    var hairSec = document.getElementById("mech-hair-section");
-    if (hair && hairSec) {
-      hairSec.style.display = "";
-      setText("mech-hair-hash", hair.pack_hash ? hair.pack_hash.slice(0, 16) + "\u2026" : "\u2014");
-      setText("mech-hair-depth", typeof hair.chain_depth === "number" ? String(hair.chain_depth) : "\u2014");
-      var genesisEl = document.getElementById("mech-hair-genesis");
-      if (genesisEl) {
-        if (hair.genesis) {
-          genesisEl.innerHTML = "<span class='at-mech-genesis'>genesis</span>";
+      runBtn.addEventListener("click", run);
+      promptEl.addEventListener("keydown", function (e) { if (e.key === "Enter") run(); });
+
+      function populateMechanics(data, eff) {
+        const panel = document.getElementById("at-mechanics");
+        if (!panel) return;
+        if (eff) {
+          setText("mech-reduction", typeof eff.reduction_ratio === "number"
+            ? (Math.round(eff.reduction_ratio * 1000) / 10 + "%") : (eff.reuse_pct + "%"));
+          setText("mech-reused", fmt(eff.reused_steps));
+          setText("mech-fresh", fmt(eff.fresh_steps));
+          setText("mech-avoided", fmt(eff.tokens_avoided));
+          setText("mech-hair-recalls", eff.hair_recalls != null ? fmt(eff.hair_recalls) : "\u2014");
+        }
+        const diversity = data.source_diversity_score;
+        setText("mech-diversity", typeof diversity === "number" ? (Math.round(diversity * 1000) / 10 + "%") : "\u2014");
+        const u = data.llm_usage;
+        if (u) {
+          setText("mech-prompt-tokens", fmt(u.prompt_tokens));
+          setText("mech-completion-tokens", fmt(u.completion_tokens));
+          setText("mech-total-tokens", fmt(u.total_tokens));
+          setText("mech-token-source", "Ollama (actual)");
         } else {
-          genesisEl.textContent = "no";
+          const est = eff ? (eff.baseline_tokens - eff.tokens_avoided) : null;
+          setText("mech-prompt-tokens", est != null ? ("\u2248 " + fmt(Math.round(est * 0.7))) : "\u2014");
+          setText("mech-completion-tokens", est != null ? ("\u2248 " + fmt(Math.round(est * 0.3))) : "\u2014");
+          setText("mech-total-tokens", est != null ? ("\u2248 " + fmt(Math.round(est))) : "\u2014");
+          setText("mech-token-source", "Workers AI (estimated)");
         }
-      }
-      setText("mech-hair-recall", fmt(hair.token_cost_recall));
-      setText("mech-hair-delta", fmt(hair.token_cost_delta));
-      setText("mech-hair-saved", hair.tokens_saved > 0 ? fmt(hair.tokens_saved) : "\u2014");
-    } else if (hairSec) {
-      hairSec.style.display = "none";
-    }
+        const rail = data.evidence_rail || [];
+        const railEl = document.getElementById("mech-rail");
+        if (railEl) {
+          railEl.innerHTML = "";
+          if (!rail.length) {
+            railEl.innerHTML = "<li class='at-mech-rail-item' style='color:#57606a'>No evidence artefacts</li>";
+          } else {
+            for (var i = 0; i < Math.min(rail.length, 10); i++) {
+              var item = rail[i];
+              var tier = ((item.confidence_tier || "unverified")).toLowerCase();
+              var li = document.createElement("li");
+              li.className = "at-mech-rail-item";
+              li.innerHTML = "<span class='at-mech-tier at-mech-tier--" + tier + "'>" + tier + "</span>" +
+                "<a class='at-mech-rail-url' href='" + escHtml(item.source_url) + "' target='_blank' rel='noopener noreferrer'>" + escHtml(item.source_url) + "</a>";
+              railEl.appendChild(li);
+            }
+            if (rail.length > 10) {
+              var li2 = document.createElement("li");
+              li2.className = "at-mech-rail-item";
+              li2.style.color = "#57606a";
+              li2.textContent = "\u2026 and " + (rail.length - 10) + " more";
+              railEl.appendChild(li2);
+            }
+          }
+        }
+        const connRail = data.connection_rail || [];
+        const connSec = document.getElementById("mech-conn-section");
+        const connEl = document.getElementById("mech-conn-rail");
+        if (connRail.length && connSec && connEl) {
+          connSec.style.display = "";
+          connEl.innerHTML = "";
+          for (var j = 0; j < Math.min(connRail.length, 6); j++) {
+            var ci = connRail[j];
+            var cl = document.createElement("li");
+            cl.className = "at-mech-rail-item";
+            cl.innerHTML = "<a class='at-mech-rail-url' href='" + escHtml(ci.source_url) + "' target='_blank' rel='noopener noreferrer'>" + escHtml(ci.source_url) + "</a>";
+            connEl.appendChild(cl);
+          }
+        } else if (connSec) {
+          connSec.style.display = "none";
+        }
 
-    panel.style.display = "";
-    const connSec = document.getElementById("mech-conn-section");
-    const connEl = document.getElementById("mech-conn-rail");
-    if (connRail.length && connSec && connEl) {
-      connSec.style.display = "block";
-      connEl.innerHTML = "";
-      for (var j = 0; j < Math.min(connRail.length, 6); j++) {
-        var ci = connRail[j];
-        var cli = document.createElement("li");
-        cli.className = "at-mech-rail-item";
-        cli.innerHTML = "<a class='at-mech-rail-url' href='" + escHtml(ci.source_url) + "' target='_blank' rel='noopener noreferrer'>" + escHtml(ci.source_url) + "</a>";
-        connEl.appendChild(cli);
-      }
-    } else if (connSec) {
-      connSec.style.display = "none";
-    }
-    panel.style.display = "block";
-  }
+        // HAIR artefact telemetry (LRM_SPEC.md §8)
+        var hair = data.model_dissent && data.model_dissent.hair_telemetry;
+        var hairSec = document.getElementById("mech-hair-section");
+        if (hair && hairSec) {
+          hairSec.style.display = "";
+          setText("mech-hair-hash", hair.pack_hash ? hair.pack_hash.slice(0, 16) + "\u2026" : "\u2014");
+          setText("mech-hair-depth", typeof hair.chain_depth === "number" ? String(hair.chain_depth) : "\u2014");
+          var genesisEl = document.getElementById("mech-hair-genesis");
+          if (genesisEl) {
+            if (hair.genesis) {
+              genesisEl.innerHTML = "<span class='at-mech-genesis'>genesis</span>";
+            } else {
+              genesisEl.textContent = "no";
+            }
+          }
+          setText("mech-hair-recall", fmt(hair.token_cost_recall));
+          setText("mech-hair-delta", fmt(hair.token_cost_delta));
+          setText("mech-hair-saved", hair.tokens_saved > 0 ? fmt(hair.tokens_saved) : "\u2014");
+        } else if (hairSec) {
+          hairSec.style.display = "none";
+        }
 
-  function escHtml(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-})();
-</script>
+        panel.style.display = "block";
+      }
+
+      function escHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+    })();
+  </script>
 
 </body>
+
 </html>
