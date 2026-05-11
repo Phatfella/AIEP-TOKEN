@@ -16,7 +16,9 @@ A side-by-side demonstration comparing standard LLM token usage against the AIEP
 | **Standard** | Stateless re-derivation — how many tokens a standard LLM call would consume starting from scratch |
 | **AIEP** | Incremental recall substrate — actual tokens used after pulling from committed prior reasoning |
 
-The efficiency panel (expandable) shows the full P117 parametric unburdening breakdown: reused steps, fresh steps, tokens avoided, source diversity score, and the raw evidence artefacts the substrate drew from.
+The efficiency panel (expandable) shows the full P117 parametric unburdening breakdown: reused steps, fresh steps, tokens avoided, **HAIR chain recalls**, source diversity score, and the raw evidence artefacts the substrate drew from. When the HAIR cross-session recall overlay fires, the efficiency summary line appends the count of recalled artefacts.
+
+The substrate also exposes a **hash verification** endpoint — any response hash can be checked against the committed ledger without authentication.
 
 ---
 
@@ -33,6 +35,23 @@ If you have a PIEA worker running locally on port 8788, the demo works with no c
 
 - `POST /api/ask` — `{ question, session_id }` → `{ answer, efficiency, evidence_rail, usage, llm_usage, source_diversity_score, connection_rail }`
 - `GET /api/stats` — `{ tokens_saved_total, … }`
+- `POST /api/recall/verify` — `{ hash: "<64-char SHA-256>" }` → `{ verified, ledger_record }` (unauthenticated)
+
+### `efficiency` object fields
+
+```json
+{
+  "reuse_pct": 68,
+  "reused_steps": 4,
+  "fresh_steps": 2,
+  "tokens_avoided": 3200,
+  "baseline_tokens": 4700,
+  "reduction_ratio": 0.68,
+  "hair_recalls": 4
+}
+```
+
+`hair_recalls` is the count of prior artefacts injected by the HAIR cross-session recall overlay. When `hair_recalls > 0`, `tokens_avoided = hair_recalls × 800`; otherwise `tokens_avoided = reused_steps × 500`.
 
 ---
 
